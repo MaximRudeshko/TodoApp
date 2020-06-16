@@ -4,10 +4,10 @@ import nextId from 'react-id-generator';
 import './index.css'
 
 
-import AppHeader from './components/app-header/app-header';
-import Search from './components/search-panel/search-panel'
-import TodoList from './components/todo-list/todo-list';
-import FilterPanel from './components/filter-panel/filter-panel'
+import AppHeader from './components/app-header';
+import Search from './components/search-panel'
+import TodoList from './components/todo-list';
+import FilterPanel from './components/filter-panel'
 
 const App = () => {
 
