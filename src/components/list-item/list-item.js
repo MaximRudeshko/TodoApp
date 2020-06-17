@@ -4,31 +4,57 @@ import './list-item.css'
 
 export default class ListItem extends React.Component{
     constructor(){
-        super()
+        super();
+        this.state = {
+            done: false,
+            important: false
+        }
 
         this.onLabelClick = () => {
-            console.log(this.props.label)
+            this.setState(({done}) => {
+                return{
+                    done : !done
+                }  
+            })
+        }
+
+        this.onMarkImportantClick = () => {
+            this.setState(({important}) => {
+                return{
+                    important:!important
+                }
+            })
         }
     }
     
 
     render(){
-       const {label, important = false} = this.props;
+       const {label, onDeleted} = this.props;
 
-       const style = {
-        color: important ? 'red' : 'black'
-    }
+       const {done, important} = this.state;
+
+       let classNames = 'd-flex justify-content-between';
+
+       if(done){
+           classNames += ' done'
+       }
+
+       if(important){
+           classNames += ' important'
+       }
 
        return (
-            <div className="d-flex justify-content-between">
-                <span style = {style}
-                      onClick = {this.onLabelClick}
+            <div className={classNames}>
+                <span onClick = {this.onLabelClick}
                       >{label}</span>
                 <div className = 'list-item-btns'>
                     <button className="btn-outline-success btn-sm">
-                        <i className="fa fa-exclamation"></i>
+                        <i className="fa fa-exclamation"
+                        onClick = {this.onMarkImportantClick}></i>
                     </button>
-                    <button className="btn-outline-danger btn-sm">
+                    <button
+                        onClick = {onDeleted}
+                        className="btn-outline-danger btn-sm">
                         <i className="fa fa-trash-o"></i>
                     </button>
                 </div>

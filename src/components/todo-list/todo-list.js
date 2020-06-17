@@ -4,7 +4,7 @@ import ListItem from '../list-item/list-item'
 
 export default class TodoList extends React.Component{
   render(){
-    const {todos} = this.props;
+    const {todos, onDeleted} = this.props;
 
     const elements = todos.map(item => {
 
@@ -12,7 +12,9 @@ export default class TodoList extends React.Component{
 
         return(
           <li key = {item.id} className="list-group-item">
-              <ListItem {...itemProps}/>
+              <ListItem 
+              onDeleted = {() => onDeleted(id)}
+              {...itemProps}/>
           </li>
         )
     })
