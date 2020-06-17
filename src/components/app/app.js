@@ -4,7 +4,8 @@ import nextId from 'react-id-generator';
 import AppHeader from '../app-header';
 import Search from '../search-panel'
 import TodoList from '../todo-list';
-import FilterPanel from '../filter-panel'
+import FilterPanel from '../filter-panel';
+import AddItemsPanel from '../add-item-panel'
 
 export default class App extends Component{
     constructor(){
@@ -29,6 +30,21 @@ export default class App extends Component{
             }
         })
     }
+
+    addItem = () => {
+        const newItem = {
+            label: 'newItem',
+            important: false,
+            id:nextId()
+        }
+        this.setState(({todoData}) => {
+            const newArr = [...todoData, newItem]
+            console.log(newArr)
+            return{
+                todoData: newArr
+            }
+        })
+    }
     
     render(){
       return(
@@ -41,6 +57,7 @@ export default class App extends Component{
           <TodoList 
           onDeleted = {this.onDeletedItem}
           todos = {this.state.todoData}/>
+          <AddItemsPanel addItem = {this.addItem}/>
       </div>
       )
     }
