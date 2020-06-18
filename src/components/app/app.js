@@ -12,11 +12,20 @@ export default class App extends Component{
       super();
       this.state = {
         todoData : [
-          {label: 'Drink cofee', important: false, id: nextId()},
-          {label: 'Create Awesome Application', important: true, id: nextId()},
-          {label: 'Have a lunch', important: false, id: nextId()}
+            this.createNewItem('Drink cofee'),
+            this.createNewItem('Create Awesome Application'),
+            this.createNewItem('Have a lunch')
         ]
       }
+    }
+
+    createNewItem = (label) => {
+        return {
+            label,
+            done:false,
+            important: false,
+            id:nextId()
+        }
     }
 
     onDeletedItem = (id) =>{
@@ -32,16 +41,42 @@ export default class App extends Component{
     }
 
     addItem = () => {
-        const newItem = {
-            label: 'newItem',
-            important: false,
-            id:nextId()
-        }
+        const newItem = this.createNewItem('New');
+
         this.setState(({todoData}) => {
             const newArr = [...todoData, newItem]
-            console.log(newArr)
             return{
                 todoData: newArr
+            }
+        })
+    }
+    
+    onToggleImportant = (id) => {
+        this.setState(({todoData}) => {
+            const index = todoData.findIndex(item => item.id === id);
+
+            const oldItem = todoData[index]
+            const newItem = {...oldItem, important: !oldItem.important}
+
+            const newArr = [...todoData.slice(0,index),newItem, ...todoData.slice(index + 1)]
+
+            return{
+                todoData: newArr
+            }
+        })
+    }
+
+    onToggleDone = (id) => {
+        this.setState(({todoData}) => {
+            const index = todoData.findIndex(item => item.id === id)
+
+            const oldItem = todoData[index]
+            const newItem = {...oldItem, done: !oldItem.done}
+
+            const newArray = [...todoData.slice(0,index),newItem, ...todoData.slice(index + 1)]
+
+            return{
+                todoData: newArray
             }
         })
     }
@@ -56,7 +91,9 @@ export default class App extends Component{
           </div>
           <TodoList 
           onDeleted = {this.onDeletedItem}
-          todos = {this.state.todoData}/>
+          todos = {this.state.todoData}
+          onToggleDone = {this.onToggleDone}
+          onToggleImportant = {this.onToggleImportant}/>
           <AddItemsPanel addItem = {this.addItem}/>
       </div>
       )

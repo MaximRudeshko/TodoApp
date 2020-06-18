@@ -9,29 +9,11 @@ export default class ListItem extends React.Component{
             done: false,
             important: false
         }
-
-        this.onLabelClick = () => {
-            this.setState(({done}) => {
-                return{
-                    done : !done
-                }  
-            })
-        }
-
-        this.onMarkImportantClick = () => {
-            this.setState(({important}) => {
-                return{
-                    important:!important
-                }
-            })
-        }
     }
     
 
     render(){
-       const {label, onDeleted} = this.props;
-
-       const {done, important} = this.state;
+       const {label, onDeleted, onToggleImportant, onToggleDone, done, important} = this.props;
 
        let classNames = 'd-flex justify-content-between';
 
@@ -45,10 +27,12 @@ export default class ListItem extends React.Component{
 
        return (
             <div className={classNames}>
-                <span onClick = {this.onLabelClick}
+                <span onClick = {onToggleDone}
                       >{label}</span>
                 <div className = 'list-item-btns'>
-                    <button className="btn-outline-success btn-sm">
+                    <button 
+                    onClick = {onToggleImportant}
+                    className="btn-outline-success btn-sm">
                         <i className="fa fa-exclamation"
                         onClick = {this.onMarkImportantClick}></i>
                     </button>
