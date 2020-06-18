@@ -15,7 +15,8 @@ export default class App extends Component{
             this.createNewItem('Drink cofee'),
             this.createNewItem('Create Awesome Application'),
             this.createNewItem('Have a lunch')
-        ]
+        ],
+        term : ''
       }
     }
 
@@ -74,6 +75,18 @@ export default class App extends Component{
         })
     }
 
+    search = (items, term) => {
+        if(term.length === 0){
+            return items
+        }
+
+        return items.filter((item) => item.label.indexOf(term) > -1 )
+    }
+
+    onSearchChange = (term) => {
+        this.setState({term})
+    }
+
     onToggleDone = (id) => {
         this.setState(({todoData}) => {
 /*             const index = todoData.findIndex(item => item.id === id)
@@ -91,20 +104,23 @@ export default class App extends Component{
     
     render(){
     
-    const {todoData} = this.state
+    const {todoData, term} = this.state
     const doneCount = todoData.filter(item => item.done).length
     const todoCount = todoData.length - doneCount;
+
+    const visibleItems = this.search(todoData,term)
 
     return(
         <div className='container'>
           <AppHeader toDo = {todoCount} done = {doneCount}/>
           <div className = 'd-flex'>
-           <Search/>
+           <Search
+           onSearchChange = {this.onSearchChange}/>
            <FilterPanel/>
           </div>
           <TodoList 
           onDeleted = {this.onDeletedItem}
-          todos = {this.state.todoData}
+          todos = {visibleItems}
           onToggleDone = {this.onToggleDone}
           onToggleImportant = {this.onToggleImportant}/>
           <AddItemsPanel onItemAdded = {this.addItem}/>
