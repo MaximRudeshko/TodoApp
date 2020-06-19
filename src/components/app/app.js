@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, {Component} from 'react';
 import nextId from 'react-id-generator';
 
@@ -16,7 +17,8 @@ export default class App extends Component{
             this.createNewItem('Create Awesome Application'),
             this.createNewItem('Have a lunch')
         ],
-        term : ''
+        term : '',
+        filter: 'active'
       }
     }
 
@@ -87,6 +89,20 @@ export default class App extends Component{
         this.setState({term})
     }
 
+    onFilterChange = (filter) => {
+        this.setState({filter})
+    }
+
+    filterItems = (items, filter) => {
+        if(filter === 'all'){
+            return items
+        }else if(filter === 'done'){
+            return items.filter(item => item.done)
+        }else if(filter === 'active'){
+            return items.filter(item => !item.done)
+        }
+    }
+
     onToggleDone = (id) => {
         this.setState(({todoData}) => {
 /*             const index = todoData.findIndex(item => item.id === id)
@@ -108,7 +124,7 @@ export default class App extends Component{
     const doneCount = todoData.filter(item => item.done).length
     const todoCount = todoData.length - doneCount;
 
-    const visibleItems = this.search(todoData,term)
+    const visibleItems = this.filterItems(this.search(todoData,term), this.state.filter)
 
     return(
         <div className='container'>
@@ -116,7 +132,9 @@ export default class App extends Component{
           <div className = 'd-flex'>
            <Search
            onSearchChange = {this.onSearchChange}/>
-           <FilterPanel/>
+           <FilterPanel
+           onFilterChange = {this.onFilterChange}
+           filter = {this.state.filter}/>
           </div>
           <TodoList 
           onDeleted = {this.onDeletedItem}
